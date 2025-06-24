@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наши работы - Delta Барбершоп</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#333333',secondary:'#666666'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+    body {
+        font-family: 'Montserrat', sans-serif;
+        scroll-behavior: smooth;
+    }
+    .nav-link {
+        position: relative;
+    }
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px;
+        left: 0;
+        background-color: #333333;
+        transition: width 0.3s;
+    }
+    .nav-link.active::after,
+    .nav-link:hover::after {
+        width: 100%;
+    }
+    .service-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+    }
+    .service-content.open {
+        max-height: 1000px;
+    }
+    .work-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+    }
+    .work-content.open {
+        max-height: 2000px;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    .custom-checkbox {
+        position: relative;
+        padding-left: 30px;
+        cursor: pointer;
+        user-select: none;
+    }
+    .custom-checkbox input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .custom-checkbox:hover input ~ .checkmark {
+        background-color: #f0f0f0;
+    }
+    .custom-checkbox input:checked ~ .checkmark {
+        background-color: #333333;
+    }
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+    .custom-checkbox input:checked ~ .checkmark:after {
+        display: block;
+    }
+    .custom-checkbox .checkmark:after {
+        left: 7px;
+        top: 3px;
+        width: 6px;
+        height: 11px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+    .star-rating {
+        display: inline-flex;
+    }
+    .star {
+        color: #d1d5db;
+        transition: color 0.2s;
+    }
+    .star.filled {
+        color: #fbbf24;
+    }
+    .modal {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+    .modal.open {
+        opacity: 1;
+        visibility: visible;
+    }
+    .custom-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+    }
+    .custom-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+    }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+    input:checked + .slider {
+        background-color: #333333;
+    }
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+    .review-slider {
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+    .review-slide {
+        min-width: 100%;
+    }
+    .scissors-logo {
+        position: relative;
+        display: inline-block;
+    }
+    .scissors-logo::before,
+    .scissors-logo::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 2px;
+        background-color: #333;
+        top: 50%;
+    }
+    .scissors-logo::before {
+        left: -25px;
+        transform: rotate(45deg);
+    }
+    .scissors-logo::after {
+        right: -25px;
+        transform: rotate(-45deg);
+    }
+    </style>    
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center">
+                <div class="scissors-logo">
+                    <span class="font-['Pacifico'] text-2xl text-primary">Delta</span>
+                </div>
+            </a>
+            <nav class="hidden md:flex space-x-8">
+                <a href="index.html" class="nav-link text-gray-600 font-medium hover:text-primary transition-colors">Главная</a>
+                <a href="about.html" class="nav-link text-gray-600 font-medium hover:text-primary transition-colors">О нас</a>
+                <a href="works.html" class="nav-link active text-primary font-medium hover:text-primary transition-colors">Наши работы</a>
+            </nav>
+            <button id="bookBtn" class="bg-primary text-white px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition-all whitespace-nowrap">Записаться</button>
+            <div class="md:hidden flex items-center">
+                <button id="mobileMenuBtn" class="w-8 h-8 flex items-center justify-center text-primary">
+                    <i class="ri-menu-line ri-lg"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden bg-white w-full">
+            <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+                <a href="index.html" class="text-gray-600 font-medium hover:text-primary transition-colors">Главная</a>
+                <a href="about.html" class="text-gray-600 font-medium hover:text-primary transition-colors">О нас</a>
+                <a href="works.html" class="text-primary font-medium hover:text-primary transition-colors">Наши работы</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Our Works Page -->
+        <section id="works" class="pt-24">
+            <!-- Gallery Section -->
+            <div class="py-16 bg-white">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold text-center text-primary mb-12">Наши работы</h2>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                            <img src="https://balanceclub.ru/wp-content/uploads/2020/05/s1200-1.jpg" alt="Мужская стрижка" class="w-full h-auto">
+                        </div>
+                        <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                            <img src="https://m66-barbershop-spb.ru/build/images/services/beard_decoration/work_examples/2.jpg" alt="Оформление бороды" class="w-full h-auto">
+                        </div>
+                        <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYx9sMK8-OZlEG7dVolhwMcYs2AnrP0glTQA&s" alt="Классическая стрижка" class="w-full h-auto">
+                        </div>
+                        <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                            <img src="https://static.tildacdn.com/tild3134-3933-4762-a535-333432363438/hightfade4.jpg" alt="Современная стрижка" class="w-full h-auto">
+                        </div>
+                        <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                            <img src="https://headshotbarbershop.com/wp-content/uploads/2019/12/2019-11-12-12-43-14-045-1.jpg" alt="Стрижка и борода" class="w-full h-auto">
+                        </div>
+                        <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGrO7GHwIDA0l4nsUnSzzgVut4ICL6DfvGoA&s" alt="Текстурированная стрижка" class="w-full h-auto">
+                        </div>
+                    </div>
+                    
+                    <div class="work-content">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                            <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                                <img src="https://www.reuzel.com/cdn/shop/articles/pompadour-hairstyle_cff7e785-56b8-4ca8-baea-bd0362889b8e.jpg?v=1742496570&width=1100" alt="Помпадур" class="w-full h-auto">
+                            </div>
+                            <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                                <img src="https://top-barbershop.com/media/2019/03/2019-04-26-11.25.57-e1556267377928-635x700.jpg" alt="Короткая стрижка" class="w-full h-auto">
+                            </div>
+                            <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                                <img src="https://static.tildacdn.com/tild3861-6438-4539-b462-653239663833/2_6.png" alt="Средняя длина" class="w-full h-auto">
+                            </div>
+                            <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                                <img src="https://m66-barbershop-spb.ru/build/images/services/beard_decoration/work_examples/1.jpg" alt="Короткая борода" class="w-full h-auto">
+                            </div>
+                            <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                                <img src="https://gentstyle.ru/wp-content/uploads/2020/04/slick-back-hair-on-top-razor-fade.jpg" alt="Зачесанные назад волосы" class="w-full h-auto">
+                            </div>
+                            <div class="overflow-hidden rounded shadow-sm hover:shadow-md transition-shadow">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWkY3sET4ZZRdKMT_KMEvhF2UBkwLFPaI06A&s" alt="Кудрявые волосы" class="w-full h-auto">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-12">
+                        <button id="worksMoreBtn" class="bg-transparent border border-primary text-primary px-8 py-3 !rounded-button font-medium hover:bg-primary hover:text-white transition-all whitespace-nowrap">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Instagram Section -->
+            <div class="py-16 bg-gray-50">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold text-center text-primary mb-6"></h2>
+                    <p class="text-center text-gray-600 mb-12"></p>
+                    
+                    <div class="flex justify-center">
+                        <a href="https://www.instagram.com/delta_barbershop" target="_blank" class="flex items-center justify-center bg-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-shadow">
+                            <i class="ri-instagram-line ri-xl text-pink-600 mr-2"></i>
+                            <span class="font-medium text-gray-800">Подписывайтесь на наш Instagram</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="scissors-logo mb-6">
+                        <span class="font-['Pacifico'] text-3xl text-white">Delta</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">Профессиональный барбершоп для настоящих мужчин. Качественные стрижки, бритье и уход за бородой.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors">
+                            <i class="ri-instagram-line ri-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors">
+                            <i class="ri-vk-line ri-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors">
+                            <i class="ri-telegram-line ri-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Контакты</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400 mr-3 mt-1">
+                                <i class="ri-map-pin-line"></i>
+                            </div>
+                            <p class="text-gray-400">г. Москва, ул. Тверская, д. 15, стр. 2</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400 mr-3 mt-1">
+                                <i class="ri-phone-line"></i>
+                            </div>
+                            <p class="text-gray-400">+7 (495) 123-45-67</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-5 h-5 flex items-center justify-center text-gray-400 mr-3 mt-1">
+                                <i class="ri-mail-line"></i>
+                            </div>
+                            <p class="text-gray-400">info@delta-barbershop.ru</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Время работы</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Понедельник - Пятница</span>
+                            <span class="text-gray-400">10:00 - 20:00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Суббота</span>
+                            <span class="text-gray-400">9:00 - 21:00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Воскресенье</span>
+                            <span class="text-gray-400">9:00 - 18:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-500">© 2025 Delta Barbershop. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="bookingModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 overflow-hidden">
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 class="text-xl font-semibold text-primary">Запись на стрижку</h3>
+                <button id="closeModal" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+                    <i class="ri-close-line ri-lg"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="bookingForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="name">Ваше имя</label>
+                        <input class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" id="name" type="text" placeholder="Иван Иванов" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="phone">Телефон</label>
+                        <input class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" id="phone" type="tel" placeholder="+7 (___) ___-__-__" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="service">Услуга</label>
+                        <div class="relative">
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8" id="service" required>
+                                <option value="" disabled selected>Выберите услугу</option>
+                                <option value="haircut">Мужская стрижка</option>
+                                <option value="beard">Моделирование бороды</option>
+                                <option value="shave">Королевское бритье</option>
+                                <option value="complex">Комплекс (стрижка + борода)</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                <i class="ri-arrow-down-s-line text-gray-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="date">Дата</label>
+                        <input class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" id="date" type="date" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2" for="time">Время</label>
+                        <div class="relative">
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8" id="time" required>
+                                <option value="" disabled selected>Выберите время</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                <i class="ri-arrow-down-s-line text-gray-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" required>
+                            <span class="checkmark"></span>
+                            <span class="text-sm text-gray-700">Я согласен на обработку персональных данных</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-opacity-90 transition-all whitespace-nowrap">Записаться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Navigation Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // Works Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const worksMoreBtn = document.getElementById('worksMoreBtn');
+            const workContent = document.querySelector('.work-content');
+            
+            worksMoreBtn.addEventListener('click', function() {
+                if (workContent.classList.contains('open')) {
+                    workContent.classList.remove('open');
+                    worksMoreBtn.textContent = 'Подробнее';
+                } else {
+                    workContent.classList.add('open');
+                    worksMoreBtn.textContent = 'Свернуть';
+                }
+            });
+        });
+
+        // Modal Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookBtn = document.getElementById('bookBtn');
+            const closeModal = document.getElementById('closeModal');
+            const bookingModal = document.getElementById('bookingModal');
+            const bookingForm = document.getElementById('bookingForm');
+            
+            function openModal() {
+                bookingModal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeModalFunc() {
+                bookingModal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+            
+            bookBtn.addEventListener('click', openModal);
+            
+            closeModal.addEventListener('click', closeModalFunc);
+            
+            bookingModal.addEventListener('click', function(e) {
+                if (e.target === bookingModal) {
+                    closeModalFunc();
+                }
+            });
+            
+            bookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Here you would normally send the form data to the server
+                alert('Спасибо за запись! Мы свяжемся с вами для подтверждения.');
+                
+                closeModalFunc();
+                bookingForm.reset();
+            });
+            
+            // Phone mask
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                let formattedValue = '';
+                
+                if (value.length > 0) {
+                    formattedValue = '+7 ';
+                    
+                    if (value.length > 1) {
+                        formattedValue += `(${value.substring(1, Math.min(4, value.length))})`;
+                    }
+                    
+                    if (value.length > 4) {
+                        formattedValue += ` ${value.substring(4, Math.min(7, value.length))}`;
+                    }
+                    
+                    if (value.length > 7) {
+                        formattedValue += `-${value.substring(7, Math.min(9, value.length))}`;
+                    }
+                    
+                    if (value.length > 9) {
+                        formattedValue += `-${value.substring(9, Math.min(11, value.length))}`;
+                    }
+                }
+                
+                e.target.value = formattedValue;
+            });
+            
+            // Set min date to today
+            const dateInput = document.getElementById('date');
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            let mm = today.getMonth() + 1;
+            let dd = today.getDate();
+            
+            if (mm < 10) mm = '0' + mm;
+            if (dd < 10) dd = '0' + dd;
+            
+            const formattedToday = yyyy + '-' + mm + '-' + dd;
+            dateInput.min = formattedToday;
+        });
+    </script>
+</body>
+</html>
